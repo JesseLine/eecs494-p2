@@ -26,9 +26,11 @@ public class FlashlightEnemyDetection : MonoBehaviour
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach(var enemy in enemies)
         {
+            //Debug.Log(enemy.name + " " + enemyInLightAngle(enemy) + " " + enemyNotHidden(enemy) + " " + enemyInRange(enemy));
             if(enemyInRange(enemy) && enemyNotHidden(enemy) && enemyInLightAngle(enemy) && GetComponent<Flashlight>().isOn() && (time >= damageRate))
             {
                 //deal damage
+                //Debug.Log("deal damage");
                 enemy.GetComponent<HasHealth>().TakeDamage(GetComponent<DoesDamage>().damage);
                 enemy.GetComponentInParent<GhostMovement>().ReduceSpeed();
                 Debug.Log(enemy.GetComponent<HasHealth>().health);
@@ -40,6 +42,8 @@ public class FlashlightEnemyDetection : MonoBehaviour
                 enemy.GetComponentInParent<GhostMovement>().NormalSpeed();
             }
         }
+        //i think this should go here so it damages all enemies at the same time
+        //time = 0;
 
     }
 

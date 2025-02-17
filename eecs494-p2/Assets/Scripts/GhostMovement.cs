@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class GhostMovement : MonoBehaviour
 {
-    public Transform player;
+    public GameObject player;
     public float speed = 2.5f;
     public float reducedSpeed;
 
@@ -15,6 +15,7 @@ public class GhostMovement : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = speed;
         reducedSpeed = speed / 2;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -22,7 +23,7 @@ public class GhostMovement : MonoBehaviour
     {
         if(player != null)
         {
-            navMeshAgent.SetDestination(player.position);
+            navMeshAgent.SetDestination(player.transform.position);
         }
     }
 
