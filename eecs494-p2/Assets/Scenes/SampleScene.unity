@@ -355,6 +355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
+  maxHealth: 10
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1286,6 +1287,7 @@ GameObject:
   - component: {fileID: 1394005581}
   - component: {fileID: 1394005582}
   - component: {fileID: 1394005583}
+  - component: {fileID: 1394005584}
   m_Layer: 0
   m_Name: Flashlight
   m_TagString: Untagged
@@ -1340,6 +1342,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LightRange: 10
   LightAngle: 45
+--- !u!114 &1394005584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394005580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac249c88ddd2764cbabd77003691209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
 --- !u!1 &1901343255
 GameObject:
   m_ObjectHideFlags: 0

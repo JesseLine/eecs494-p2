@@ -7,9 +7,12 @@ public class FlashlightEnemyDetection : MonoBehaviour
     public float LightRange = 10f;
     public float LightAngle = 45;
 
+    public float damageRate = 1f;
+
+    private float time = 0f;
+
     LayerMask layerMask;
 
-    private List<GameObject> ghostList;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,17 +22,20 @@ public class FlashlightEnemyDetection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        time += Time.deltaTime;
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach(var enemy in enemies)
         {
-            if(enemyInRange(enemy) && enemyNotHidden(enemy) && enemyInLightAngle(enemy))
+            if(enemyInRange(enemy) && enemyNotHidden(enemy) && enemyInLightAngle(enemy) && GetComponent<Flashlight>().isOn() && (time >= damageRate))
             {
                 //deal damage
-                Debug.Log("Enemy in flashlight cone");
+                enemy.GetComponent<HasHealth>().TakeDamage(GetComponent<DoesDamage>().damage);
+                Debug.Log(enemy.GetComponent<HasHealth>().health);
+                time = 0;
             }
             else
             {
-                Debug.Log("Enemy NOT in light");
+                //Debug.Log("Enemy NOT in light");
             }
         }
 

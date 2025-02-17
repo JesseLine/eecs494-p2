@@ -35,4 +35,8 @@ public class Flashlight : MonoBehaviour
             isON = !isON;
         }
     }
+    public bool isOn()
+    {
+        return isON;
+    }
 }
