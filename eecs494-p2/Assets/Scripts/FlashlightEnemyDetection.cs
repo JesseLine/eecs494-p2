@@ -30,12 +30,14 @@ public class FlashlightEnemyDetection : MonoBehaviour
             {
                 //deal damage
                 enemy.GetComponent<HasHealth>().TakeDamage(GetComponent<DoesDamage>().damage);
+                enemy.GetComponentInParent<GhostMovement>().ReduceSpeed();
                 Debug.Log(enemy.GetComponent<HasHealth>().health);
                 time = 0;
             }
             else
             {
                 //Debug.Log("Enemy NOT in light");
+                enemy.GetComponentInParent<GhostMovement>().NormalSpeed();
             }
         }
 
