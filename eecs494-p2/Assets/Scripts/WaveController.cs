@@ -5,16 +5,19 @@ using TMPro;
 
 public class WaveController : MonoBehaviour
 {
-    //public List<GameObject> spawnPoints;
+
+    Subscription<DeathEvent> deathEventSubscription;
+    Subscription<GameOverEvent> gameOverEventSubscription;
+
     public GameObject[] spawnPoints;
     public GameObject enemyPrefab;
     public TextMeshProUGUI waveText;
     public TextMeshProUGUI endWaveText;
 
     public float enemyIncreaseRatio = 1.5f;
-    public float spawnRate = 2f;
+    public float spawnRate = 5f;
 
-    private float spawnTimer;
+    public float spawnTimer = 0;
 
     public int currentWave = 0;
 
@@ -23,11 +26,15 @@ public class WaveController : MonoBehaviour
     private int enemiesRemaining;
     private bool waveOver = true;
 
+    private bool gameOver = false;
+
 
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        deathEventSubscription = EventBus.Subscribe<DeathEvent>(_OnKill);
+        gameOverEventSubscription = EventBus.Subscribe<GameOverEvent>(_OnGameOver);
         waveText.text = "Wave " + currentWave.ToString();
         endWaveText.text = "Press SPACE to start wave";
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
@@ -37,6 +44,8 @@ public class WaveController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameOver) return;
+
         if(Input.GetKeyDown(KeyCode.Space) && waveOver)
         {
             Debug.Log("space pressed");
@@ -89,5 +98,15 @@ public class WaveController : MonoBehaviour
     {
         endWaveText.text = "Wave Ended: Press SPACE to start next wave";
         waveOver = true;
+    }
+
+    void _OnKill(DeathEvent e) 
+    {
+        enemiesRemaining--;
+    }
+
+    void _OnGameOver(GameOverEvent e)
+    {
+        gameOver = true;
     }
 }

@@ -5,16 +5,17 @@ public class GhostMovement : MonoBehaviour
 {
     public GameObject player;
     public float speed = 2.5f;
-    public float reducedSpeed;
+    public float reducedSpeed = 1f;
 
+    public float currentSpeed;
     private NavMeshAgent navMeshAgent;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        currentSpeed = speed;
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = speed;
-        reducedSpeed = speed / 2;
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -27,12 +28,23 @@ public class GhostMovement : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        navMeshAgent.speed = currentSpeed;
+        //Debug.Log(currentSpeed.ToString());
+    }
+
     public void ReduceSpeed()
     {
-        navMeshAgent.speed = reducedSpeed;
+        //Debug.Log("speed reduced");
+        currentSpeed = reducedSpeed;
     }
     public void NormalSpeed()
     {
-        navMeshAgent.speed = speed;
+        if (navMeshAgent != null)
+        {
+            currentSpeed = speed;
+        }
+
     }
 }

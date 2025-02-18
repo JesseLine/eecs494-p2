@@ -5,6 +5,7 @@ public class HasHealth : MonoBehaviour
     public int health = 10;
     public int maxHealth = 10;
 
+
     // Update is called once per frame
     void Update()
     {
@@ -13,9 +14,14 @@ public class HasHealth : MonoBehaviour
             if(transform.tag == "Player")
             {
                 //gameOver
+                EventBus.Publish<GameOverEvent>(new GameOverEvent());
             }
             else
             {
+                if(transform.tag == "Enemy")
+                {
+                    EventBus.Publish<DeathEvent>(new DeathEvent(transform.tag));
+                }
                 Destroy(transform.gameObject);
             }
         }
@@ -30,4 +36,16 @@ public class HasHealth : MonoBehaviour
     {
         health = maxHealth;
     }
+}
+
+public class DeathEvent
+{
+    public string tag;
+    public DeathEvent(string _tag) { tag = _tag; }
+
+}
+
+public class GameOverEvent
+{
+
 }

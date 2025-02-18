@@ -27,14 +27,17 @@ public class FlashlightEnemyDetection : MonoBehaviour
         foreach(var enemy in enemies)
         {
             //Debug.Log(enemy.name + " " + enemyInLightAngle(enemy) + " " + enemyNotHidden(enemy) + " " + enemyInRange(enemy));
-            if(enemyInRange(enemy) && enemyNotHidden(enemy) && enemyInLightAngle(enemy) && GetComponent<Flashlight>().isOn() && (time >= damageRate))
+            if(enemyInRange(enemy) && enemyNotHidden(enemy) && enemyInLightAngle(enemy) && GetComponent<Flashlight>().isOn())
             {
-                //deal damage
-                //Debug.Log("deal damage");
-                enemy.GetComponent<HasHealth>().TakeDamage(GetComponent<DoesDamage>().damage);
                 enemy.GetComponentInParent<GhostMovement>().ReduceSpeed();
-                Debug.Log(enemy.GetComponent<HasHealth>().health);
-                time = 0;
+
+                if((time >= damageRate))
+                {
+                    //deal damage
+                    //Debug.Log("deal damage");
+                    enemy.GetComponent<HasHealth>().TakeDamage(GetComponent<DoesDamage>().damage);
+                    Debug.Log(enemy.GetComponent<HasHealth>().health);
+                }
             }
             else
             {
@@ -42,8 +45,10 @@ public class FlashlightEnemyDetection : MonoBehaviour
                 enemy.GetComponentInParent<GhostMovement>().NormalSpeed();
             }
         }
-        //i think this should go here so it damages all enemies at the same time
-        //time = 0;
+        if(time >= damageRate)
+        {
+            time = 0;
+        }
 
     }
 

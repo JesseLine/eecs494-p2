@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6493554142818411475}
   - component: {fileID: 670204790632358984}
   - component: {fileID: 8508955779670574736}
+  - component: {fileID: 8348513890235451524}
   m_Layer: 7
   m_Name: GhostBody
   m_TagString: Enemy
@@ -125,6 +126,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 5
   maxHealth: 5
+--- !u!54 &8348513890235451524
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5516624845838952653}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6019604321007284815
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,6 +164,7 @@ GameObject:
   - component: {fileID: 8179770107187928213}
   - component: {fileID: 7183088909166918334}
   - component: {fileID: 8551006672018457143}
+  - component: {fileID: -6676308111833236837}
   m_Layer: 7
   m_Name: Ghost
   m_TagString: Enemy
@@ -195,4 +224,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   speed: 2.5
-  reducedSpeed: 0
+  reducedSpeed: 1
+  currentSpeed: 0
+--- !u!114 &-6676308111833236837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6019604321007284815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac249c88ddd2764cbabd77003691209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
