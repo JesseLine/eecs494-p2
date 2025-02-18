@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CameraLook : MonoBehaviour
 {
+    Subscription<GameOverEvent> gameOverEventSubscription;
+
     public float mouseSensitivity = 100f;
 
     public Transform playerBody;
@@ -11,6 +13,7 @@ public class CameraLook : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        gameOverEventSubscription = EventBus.Subscribe<GameOverEvent>(_OnGameOver);
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -28,5 +31,10 @@ public class CameraLook : MonoBehaviour
         playerBody.Rotate(Vector3.up * mouseX);
 
 
+    }
+
+    void _OnGameOver(GameOverEvent e)
+    {
+        Cursor.lockState = CursorLockMode.None;
     }
 }
