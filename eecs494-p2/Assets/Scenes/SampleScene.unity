@@ -1493,7 +1493,7 @@ MonoBehaviour:
   waveText: {fileID: 1128984622}
   endWaveText: {fileID: 947302430}
   enemyIncreaseRatio: 1.5
-  spawnRate: 15
+  spawnRate: 5
   spawnTimer: 0
   currentWave: 0
 --- !u!4 &217455612
