@@ -5,6 +5,10 @@ public class GameController : MonoBehaviour
     Subscription<GameOverEvent> gameOverEventSubscription;
     public GameObject gameOverScreen;
 
+    public GameObject pauseMenu;
+
+    private bool gamePaused = false;
+
     private void Start()
     {
         QualitySettings.vSyncCount = 1;
@@ -14,8 +18,26 @@ public class GameController : MonoBehaviour
         gameOverScreen.SetActive(false);
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape) && !gamePaused)
+        {
+            Debug.Log("PAUSE!");
+            gamePaused = true;
+            pauseMenu.SetActive(true);
+            EventBus.Publish<PauseEvent>(new PauseEvent());
+        }
+    }
+
     void _OnGameOver(GameOverEvent e)
     {
+        if (gameOverScreen == null) return;
         gameOverScreen.SetActive(true);
     }
+
+}
+
+public class PauseEvent
+{
+
 }

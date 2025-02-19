@@ -3,6 +3,8 @@ using TMPro;
 
 public class Flashlight : MonoBehaviour
 {
+    Subscription<PauseEvent> pauseEventSubscription;
+    Subscription<UnPauseEvent> unPauseEventSubscription;
 
     public GameObject ON;
     public GameObject OFF;
@@ -11,9 +13,14 @@ public class Flashlight : MonoBehaviour
 
     private bool isON;
 
+    private bool gamePause = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        pauseEventSubscription = EventBus.Subscribe<PauseEvent>(_OnPause);
+        unPauseEventSubscription = EventBus.Subscribe<UnPauseEvent>(_OnUnPause);
+
         ON.SetActive(false);
         OFF.SetActive(true);
         isON = false;
@@ -22,6 +29,8 @@ public class Flashlight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gamePause) return;
+
         if (isON)
         {
             battery -= Time.deltaTime;
@@ -51,5 +60,15 @@ public class Flashlight : MonoBehaviour
     public bool isOn()
     {
         return isON;
+    }
+
+    void _OnPause(PauseEvent e)
+    {
+        gamePause = true;
+    }
+
+    void _OnUnPause(UnPauseEvent e)
+    {
+        gamePause = false;
     }
 }

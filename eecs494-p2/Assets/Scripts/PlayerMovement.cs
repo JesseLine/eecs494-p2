@@ -3,6 +3,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     Subscription<GameOverEvent> gameOverEventSubscription;
+    Subscription<PauseEvent> pauseEventSubscription;
+    Subscription<UnPauseEvent> unPauseEventSubscription;
 
     public CharacterController controller;
     public Transform groundCheck;
@@ -16,16 +18,20 @@ public class PlayerMovement : MonoBehaviour
     Vector3 velocity;
     bool isGrounded;
     private bool gameOver = false;
+    private bool gamePause = false;
 
     private void Start()
     {
         gameOverEventSubscription = EventBus.Subscribe<GameOverEvent>(_OnGameOver);
+        pauseEventSubscription = EventBus.Subscribe<PauseEvent>(_OnPause);
+        unPauseEventSubscription = EventBus.Subscribe<UnPauseEvent>(_OnUnPause);
     }
 
     // Update is called once per frame
     void Update()
     {
         if (gameOver) return;
+        if (gamePause) return;
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if(isGrounded && velocity.y < 0)
@@ -49,5 +55,15 @@ public class PlayerMovement : MonoBehaviour
     void _OnGameOver(GameOverEvent e)
     {
         gameOver = true;
+    }
+
+    void _OnPause(PauseEvent e)
+    {
+        gamePause = true;
+    }
+
+    void _OnUnPause(UnPauseEvent e)
+    {
+        gamePause = false;
     }
 }

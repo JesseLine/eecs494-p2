@@ -3,6 +3,8 @@ using UnityEngine;
 public class CameraLook : MonoBehaviour
 {
     Subscription<GameOverEvent> gameOverEventSubscription;
+    Subscription<PauseEvent> pauseEventSubscription;
+    Subscription<UnPauseEvent> unPauseEventSubscription;
 
     public float mouseSensitivity = 100f;
 
@@ -11,11 +13,14 @@ public class CameraLook : MonoBehaviour
     float xRotation = 0f;
 
     private bool gameOver = false;
+    private bool gamePause = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         gameOverEventSubscription = EventBus.Subscribe<GameOverEvent>(_OnGameOver);
+        pauseEventSubscription = EventBus.Subscribe<PauseEvent>(_OnPause);
+        unPauseEventSubscription = EventBus.Subscribe<UnPauseEvent>(_OnUnPause);
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -23,6 +28,7 @@ public class CameraLook : MonoBehaviour
     void Update()
     {
         if (gameOver) return;
+        if (gamePause) return;
 
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -41,5 +47,15 @@ public class CameraLook : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         gameOver = true;
+    }
+
+    void _OnPause(PauseEvent e)
+    {
+        gamePause = true;
+    }
+
+    void _OnUnPause(UnPauseEvent e)
+    {
+        gamePause = false;
     }
 }

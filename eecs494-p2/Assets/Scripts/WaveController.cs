@@ -5,7 +5,8 @@ using TMPro;
 
 public class WaveController : MonoBehaviour
 {
-
+    Subscription<PauseEvent> pauseEventSubscription;
+    Subscription<UnPauseEvent> unPauseEventSubscription;
     Subscription<DeathEvent> deathEventSubscription;
     Subscription<GameOverEvent> gameOverEventSubscription;
 
@@ -27,12 +28,15 @@ public class WaveController : MonoBehaviour
     private bool waveOver = true;
 
     private bool gameOver = false;
+    private bool gamePause = false;
 
 
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        pauseEventSubscription = EventBus.Subscribe<PauseEvent>(_OnPause);
+        unPauseEventSubscription = EventBus.Subscribe<UnPauseEvent>(_OnUnPause);
         deathEventSubscription = EventBus.Subscribe<DeathEvent>(_OnKill);
         gameOverEventSubscription = EventBus.Subscribe<GameOverEvent>(_OnGameOver);
         waveText.text = "Wave " + currentWave.ToString();
@@ -45,6 +49,7 @@ public class WaveController : MonoBehaviour
     void Update()
     {
         if (gameOver) return;
+        if (gamePause) return;
 
         if(Input.GetKeyDown(KeyCode.Space) && waveOver)
         {
@@ -108,5 +113,15 @@ public class WaveController : MonoBehaviour
     void _OnGameOver(GameOverEvent e)
     {
         gameOver = true;
+    }
+
+    void _OnPause(PauseEvent e)
+    {
+        gamePause = true;
+    }
+
+    void _OnUnPause(UnPauseEvent e)
+    {
+        gamePause = false;
     }
 }

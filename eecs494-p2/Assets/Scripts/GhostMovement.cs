@@ -3,6 +3,9 @@ using UnityEngine.AI;
 
 public class GhostMovement : MonoBehaviour
 {
+    Subscription<PauseEvent> pauseEventSubscription;
+    Subscription<UnPauseEvent> unPauseEventSubscription;
+
     public GameObject player;
     public float speed = 2.5f;
     public float reducedSpeed = 1f;
@@ -10,9 +13,14 @@ public class GhostMovement : MonoBehaviour
     public float currentSpeed;
     private NavMeshAgent navMeshAgent;
 
+    private bool gamePause = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        pauseEventSubscription = EventBus.Subscribe<PauseEvent>(_OnPause);
+        unPauseEventSubscription = EventBus.Subscribe<UnPauseEvent>(_OnUnPause);
+
         currentSpeed = speed;
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = speed;
@@ -22,6 +30,8 @@ public class GhostMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gamePause) return;
+
         if(player != null)
         {
             navMeshAgent.SetDestination(player.transform.position);
@@ -46,5 +56,15 @@ public class GhostMovement : MonoBehaviour
             currentSpeed = speed;
         }
 
+    }
+
+    void _OnPause(PauseEvent e)
+    {
+        gamePause = true;
+    }
+
+    void _OnUnPause(UnPauseEvent e)
+    {
+        gamePause = false;
     }
 }

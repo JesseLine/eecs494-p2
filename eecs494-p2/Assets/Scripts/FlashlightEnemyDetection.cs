@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class FlashlightEnemyDetection : MonoBehaviour
 {
+    Subscription<PauseEvent> pauseEventSubscription;
+    Subscription<UnPauseEvent> unPauseEventSubscription;
+
     public float LightRange = 10f;
     public float LightAngle = 45;
 
@@ -13,17 +16,23 @@ public class FlashlightEnemyDetection : MonoBehaviour
     private Light pointLight;
     private float time = 0f;
 
+    private bool gamePause = false;
+
     LayerMask layerMask;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         layerMask = LayerMask.GetMask("Ground","Enemy");
+        pauseEventSubscription = EventBus.Subscribe<PauseEvent>(_OnPause);
+        unPauseEventSubscription = EventBus.Subscribe<UnPauseEvent>(_OnUnPause);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (gamePause) return;
+
         time += Time.deltaTime;
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach(var enemy in enemies)
@@ -117,6 +126,15 @@ public class FlashlightEnemyDetection : MonoBehaviour
             //Debug.Log("enemy !!!! hidden");
             return false;
         }
+    }
+    void _OnPause(PauseEvent e)
+    {
+        gamePause = true;
+    }
+
+    void _OnUnPause(UnPauseEvent e)
+    {
+        gamePause = false;
     }
 }
 
