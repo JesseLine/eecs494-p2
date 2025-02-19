@@ -10,6 +10,8 @@ public class CameraLook : MonoBehaviour
 
     float xRotation = 0f;
 
+    private bool gameOver = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,6 +22,8 @@ public class CameraLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameOver) return;
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
@@ -36,5 +40,6 @@ public class CameraLook : MonoBehaviour
     void _OnGameOver(GameOverEvent e)
     {
         Cursor.lockState = CursorLockMode.None;
+        gameOver = true;
     }
 }

@@ -1,11 +1,20 @@
 using UnityEngine;
+using TMPro;
 
 public class HasHealth : MonoBehaviour
 {
     public int health = 10;
     public int maxHealth = 10;
 
+    public TextMeshProUGUI playerHealthText;
 
+    private void Start()
+    {
+        if (playerHealthText != null)
+        {
+            playerHealthText.text = "Health: " + health.ToString();
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -30,6 +39,10 @@ public class HasHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+        if (playerHealthText != null)
+        {
+            playerHealthText.text = "Health: " + health.ToString();
+        }
     }
 
     public void resetHealth()

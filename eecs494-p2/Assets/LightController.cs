@@ -20,7 +20,7 @@ public class LightController : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if(timer >= 1)
+        if(timer >= 0.5)
         {
             light.color = enemyEyeColor;
         }
@@ -46,11 +46,9 @@ public class LightController : MonoBehaviour
     {
         if(e.go == transform.parent.gameObject)
         {
-            if (timer >= 1)
-            {
-                light.color = Color.red;
-                timer = 0;
-            }
+
+            light.color = Color.red;
+            timer = 0;
         }
         
         
