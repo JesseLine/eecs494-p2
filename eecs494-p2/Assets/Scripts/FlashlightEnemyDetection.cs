@@ -9,6 +9,8 @@ public class FlashlightEnemyDetection : MonoBehaviour
 
     public float damageRate = 1f;
 
+    private float enemyEyeColor = 0x00680A;
+    private Light pointLight;
     private float time = 0f;
 
     LayerMask layerMask;
@@ -37,12 +39,21 @@ public class FlashlightEnemyDetection : MonoBehaviour
                     //Debug.Log("deal damage");
                     enemy.GetComponent<HasHealth>().TakeDamage(GetComponent<DoesDamage>().damage);
                     Debug.Log(enemy.GetComponent<HasHealth>().health);
+
+                    //change enemy eyes color
+                    //Debug.Log("EYE CHANGE COLOR");
+                    EventBus.Publish<DamageDealtEvent>(new DamageDealtEvent(enemy));
+                    //enemy.GetComponentInChildren<Light>().color = Color.red;
+
                 }
+                
             }
             else
             {
                 //Debug.Log("Enemy NOT in light");
                 enemy.GetComponentInParent<GhostMovement>().NormalSpeed();
+                //go back to normal eye color
+                //enemy.GetComponentInChildren<Light>().color = Color.green;
             }
         }
         if(time >= damageRate)
@@ -107,4 +118,10 @@ public class FlashlightEnemyDetection : MonoBehaviour
             return false;
         }
     }
+}
+
+public class DamageDealtEvent
+{
+    public GameObject go;
+    public DamageDealtEvent(GameObject _go) { go = _go; }
 }

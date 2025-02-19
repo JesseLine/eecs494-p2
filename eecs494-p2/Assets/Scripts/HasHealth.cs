@@ -22,7 +22,7 @@ public class HasHealth : MonoBehaviour
                 {
                     EventBus.Publish<DeathEvent>(new DeathEvent(transform.tag));
                 }
-                Destroy(transform.gameObject);
+                Destroy(transform.parent.gameObject);
             }
         }
     }
