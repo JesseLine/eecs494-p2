@@ -5,6 +5,7 @@ public class Flashlight : MonoBehaviour
 {
     Subscription<PauseEvent> pauseEventSubscription;
     Subscription<UnPauseEvent> unPauseEventSubscription;
+    Subscription<GameOverEvent> gameOverEventSubscription;
 
     public GameObject ON;
     public GameObject OFF;
@@ -14,12 +15,14 @@ public class Flashlight : MonoBehaviour
     private bool isON;
 
     private bool gamePause = false;
+    private bool gameOver = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         pauseEventSubscription = EventBus.Subscribe<PauseEvent>(_OnPause);
         unPauseEventSubscription = EventBus.Subscribe<UnPauseEvent>(_OnUnPause);
+        gameOverEventSubscription = EventBus.Subscribe<GameOverEvent>(_OnGameOver);
 
         ON.SetActive(false);
         OFF.SetActive(true);
@@ -30,6 +33,7 @@ public class Flashlight : MonoBehaviour
     void Update()
     {
         if (gamePause) return;
+        if (gameOver) return;
 
         if (isON)
         {
@@ -86,5 +90,10 @@ public class Flashlight : MonoBehaviour
     void _OnUnPause(UnPauseEvent e)
     {
         gamePause = false;
+    }
+
+    void _OnGameOver(GameOverEvent e)
+    {
+        gameOver = true;
     }
 }
