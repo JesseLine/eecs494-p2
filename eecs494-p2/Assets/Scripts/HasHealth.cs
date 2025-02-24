@@ -12,6 +12,8 @@ public class HasHealth : MonoBehaviour
 
     public TextMeshProUGUI playerHealthText;
 
+    public GameObject batteryPrefab;
+
     private float healthIncreaseMultiplyer = 1.5f;
 
     private void Start()
@@ -39,6 +41,15 @@ public class HasHealth : MonoBehaviour
             {
                 if(transform.tag == "Enemy")
                 {
+                    if(batteryPrefab != null)
+                    {
+                        float rand = Random.Range(0, 10);
+                        if(rand <= 1)
+                        {
+                            Debug.Log("battery dropped");
+                            Instantiate(batteryPrefab, transform.position, batteryPrefab.transform.rotation);
+                        }
+                    }
                     EventBus.Publish<DeathEvent>(new DeathEvent(transform.tag));
                 }
                 Destroy(transform.parent.gameObject);
@@ -59,6 +70,7 @@ public class HasHealth : MonoBehaviour
     {
         health = maxHealth;
     }
+
 
     void _OnNewWave(NewWaveEvent e)
     {

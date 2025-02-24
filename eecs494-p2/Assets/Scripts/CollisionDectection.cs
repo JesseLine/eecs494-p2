@@ -23,5 +23,20 @@ public class CollisionDectection : MonoBehaviour
             }
         }
     }
-   
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Battery")
+        {
+            Debug.Log("Battery Collected!");
+            EventBus.Publish<BatteryPickUpEvent>(new BatteryPickUpEvent());
+            Destroy(other.gameObject);
+        }
+    }
+
+}
+
+public class BatteryPickUpEvent
+{
+
 }

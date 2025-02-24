@@ -103,6 +103,7 @@ public class WaveController : MonoBehaviour
     void EndWave()
     {
         endWaveText.text = "Wave Ended: Press SPACE to start next wave";
+        EventBus.Publish<WaveEndEvent>(new WaveEndEvent());
         waveOver = true;
     }
 
@@ -133,6 +134,11 @@ public class WaveController : MonoBehaviour
 }
 
 public class NewWaveEvent
+{
+
+}
+
+public class WaveEndEvent
 {
 
 }

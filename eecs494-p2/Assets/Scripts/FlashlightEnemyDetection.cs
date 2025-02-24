@@ -72,6 +72,7 @@ public class FlashlightEnemyDetection : MonoBehaviour
 
     }
 
+
     bool enemyInLightAngle(GameObject enemy)
     {
         Vector3 side1 = enemy.transform.position - transform.position;

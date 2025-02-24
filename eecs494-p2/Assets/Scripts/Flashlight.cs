@@ -6,6 +6,9 @@ public class Flashlight : MonoBehaviour
     Subscription<PauseEvent> pauseEventSubscription;
     Subscription<UnPauseEvent> unPauseEventSubscription;
     Subscription<GameOverEvent> gameOverEventSubscription;
+    Subscription<NewWaveEvent> newWaveEventSubscription;
+    Subscription<WaveEndEvent> waveEndEventSubscription;
+    Subscription<BatteryPickUpEvent> batteryPickUpEventSubscription;
 
     public GameObject ON;
     public GameObject OFF;
@@ -16,6 +19,7 @@ public class Flashlight : MonoBehaviour
 
     private bool gamePause = false;
     private bool gameOver = false;
+    private bool waveStarted = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,6 +27,9 @@ public class Flashlight : MonoBehaviour
         pauseEventSubscription = EventBus.Subscribe<PauseEvent>(_OnPause);
         unPauseEventSubscription = EventBus.Subscribe<UnPauseEvent>(_OnUnPause);
         gameOverEventSubscription = EventBus.Subscribe<GameOverEvent>(_OnGameOver);
+        newWaveEventSubscription = EventBus.Subscribe<NewWaveEvent>(_OnNewWave);
+        waveEndEventSubscription = EventBus.Subscribe<WaveEndEvent>(_OnWaveEnd);
+        batteryPickUpEventSubscription = EventBus.Subscribe<BatteryPickUpEvent>(_OnBatteryPickUp);
 
         ON.SetActive(false);
         OFF.SetActive(true);
@@ -37,17 +44,20 @@ public class Flashlight : MonoBehaviour
 
         if (isON)
         {
-            battery -= Time.deltaTime;
-            if(batteryPercentageText != null)
+            if (waveStarted)    //battery doesn't go down when the wave hasn't started
             {
-                batteryPercentageText.text = "Battery: " + ((int)battery).ToString() + "%";
+                battery -= Time.deltaTime;
+                if (batteryPercentageText != null)
+                {
+                    batteryPercentageText.text = "Battery: " + ((int)battery).ToString() + "%";
+                }
             }
+            
             
         }
         if (!isON)
         {
-            battery += Time.deltaTime;
-            if(battery > 100)
+            if (battery > 100)
             {
                 battery = 100;
             }
@@ -55,6 +65,7 @@ public class Flashlight : MonoBehaviour
             {
                 batteryPercentageText.text = "Battery: " + ((int)battery).ToString() + "%";
             }
+            
         }
         if (battery <= 0)
         {
@@ -95,5 +106,20 @@ public class Flashlight : MonoBehaviour
     void _OnGameOver(GameOverEvent e)
     {
         gameOver = true;
+    }
+
+    void _OnNewWave(NewWaveEvent e)
+    {
+        waveStarted = true;
+    }
+
+    void _OnWaveEnd(WaveEndEvent e)
+    {
+        waveStarted = false;
+    }
+
+    void _OnBatteryPickUp(BatteryPickUpEvent e)
+    {
+        battery = 100;
     }
 }
