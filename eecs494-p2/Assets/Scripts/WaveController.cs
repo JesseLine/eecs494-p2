@@ -54,6 +54,7 @@ public class WaveController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space) && waveOver)
         {
             Debug.Log("space pressed");
+            EventBus.Publish<NewWaveEvent>(new NewWaveEvent());
             StartWave();
         }
         if (!waveOver)
@@ -105,6 +106,11 @@ public class WaveController : MonoBehaviour
         waveOver = true;
     }
 
+    public int GetCurrentWave()
+    {
+        return currentWave;
+    }
+
     void _OnKill(DeathEvent e) 
     {
         enemiesRemaining--;
@@ -124,4 +130,9 @@ public class WaveController : MonoBehaviour
     {
         gamePause = false;
     }
+}
+
+public class NewWaveEvent
+{
+
 }

@@ -5,13 +5,20 @@ public class GhostMovement : MonoBehaviour
 {
     Subscription<PauseEvent> pauseEventSubscription;
     Subscription<UnPauseEvent> unPauseEventSubscription;
+    Subscription<NewWaveEvent> newWaveEventSubscription;
 
     public GameObject player;
+
+    public GameObject waveController;
+
     public float speed = 2.5f;
     public float reducedSpeed = 1f;
 
+    //public static int currentWave = 0;
     public float currentSpeed;
     private NavMeshAgent navMeshAgent;
+
+    private float enemySpeedIncreaseMultiplyer = 1.15f;
 
     private bool gamePause = false;
 
@@ -20,6 +27,12 @@ public class GhostMovement : MonoBehaviour
     {
         pauseEventSubscription = EventBus.Subscribe<PauseEvent>(_OnPause);
         unPauseEventSubscription = EventBus.Subscribe<UnPauseEvent>(_OnUnPause);
+        newWaveEventSubscription = EventBus.Subscribe<NewWaveEvent>(_OnNewWave);
+
+        waveController = GameObject.FindGameObjectWithTag("WaveController");
+        //Debug.Log(currentWave);
+        speed = (speed * Mathf.Pow(enemySpeedIncreaseMultiplyer, waveController.GetComponent<WaveController>().GetCurrentWave()-1));
+        reducedSpeed = speed / 2;
 
         currentSpeed = speed;
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -66,5 +79,10 @@ public class GhostMovement : MonoBehaviour
     void _OnUnPause(UnPauseEvent e)
     {
         gamePause = false;
+    }
+
+    void _OnNewWave(NewWaveEvent e)
+    {
+        //currentWave++;
     }
 }

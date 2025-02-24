@@ -3,13 +3,23 @@ using TMPro;
 
 public class HasHealth : MonoBehaviour
 {
+    Subscription<NewWaveEvent> newWaveEventSubscription;
+
     public int health = 10;
     public int maxHealth = 10;
 
+    public static int currentWave = 0;
+
     public TextMeshProUGUI playerHealthText;
+
+    private float healthIncreaseMultiplyer = 1.5f;
 
     private void Start()
     {
+        newWaveEventSubscription = EventBus.Subscribe<NewWaveEvent>(_OnNewWave);
+
+        health = (int)(health * Mathf.Pow(healthIncreaseMultiplyer, currentWave));
+        
         if (playerHealthText != null)
         {
             playerHealthText.text = "Health: " + health.ToString();
@@ -48,6 +58,11 @@ public class HasHealth : MonoBehaviour
     public void resetHealth()
     {
         health = maxHealth;
+    }
+
+    void _OnNewWave(NewWaveEvent e)
+    {
+        currentWave++;
     }
 }
 

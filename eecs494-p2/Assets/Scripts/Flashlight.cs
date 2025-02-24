@@ -34,9 +34,25 @@ public class Flashlight : MonoBehaviour
         if (isON)
         {
             battery -= Time.deltaTime;
-            batteryPercentageText.text = "Battery: " + ((int)battery).ToString() + "%";
+            if(batteryPercentageText != null)
+            {
+                batteryPercentageText.text = "Battery: " + ((int)battery).ToString() + "%";
+            }
+            
         }
-        if(battery <= 0)
+        if (!isON)
+        {
+            battery += Time.deltaTime;
+            if(battery > 100)
+            {
+                battery = 100;
+            }
+            if (batteryPercentageText != null)
+            {
+                batteryPercentageText.text = "Battery: " + ((int)battery).ToString() + "%";
+            }
+        }
+        if (battery <= 0)
         {
             isON = false;
             ON.SetActive(false);

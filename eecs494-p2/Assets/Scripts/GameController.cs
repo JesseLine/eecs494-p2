@@ -20,13 +20,14 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && !gamePaused)
+        //will try to fix this after the playtest
+        /*if(Input.GetKeyDown(KeyCode.Escape) && !gamePaused)
         {
             Debug.Log("PAUSE!");
             gamePaused = true;
             pauseMenu.SetActive(true);
             EventBus.Publish<PauseEvent>(new PauseEvent());
-        }
+        }*/
     }
 
     void _OnGameOver(GameOverEvent e)
