@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class CollisionDectection : MonoBehaviour
 {
-    public float invincibilityTime = 1f;
+    public float invincibilityTime = 3f;
 
-    private float time = 0;
+    private float time = 3f;
 
     private void Update()
     {
         time += Time.deltaTime;
     }
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+   /* private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if(hit.transform.tag == "Enemy")
         {
@@ -22,10 +22,21 @@ public class CollisionDectection : MonoBehaviour
                 time = 0;
             }
         }
-    }
+    } */
+    
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.gameObject.tag == "Enemy")
+        {
+            if(time >= invincibilityTime)
+            {
+                GetComponent<HasHealth>().TakeDamage(1);
+                time = 0;
+            }
+            
+        }
+
         if(other.tag == "Battery")
         {
             Debug.Log("Battery Collected!");

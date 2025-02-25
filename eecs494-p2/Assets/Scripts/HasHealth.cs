@@ -1,9 +1,11 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class HasHealth : MonoBehaviour
 {
     Subscription<NewWaveEvent> newWaveEventSubscription;
+    Subscription<RestartGameEvent> restartGameEventSubscription;
 
     public int health = 10;
     public int maxHealth = 10;
@@ -14,14 +16,24 @@ public class HasHealth : MonoBehaviour
 
     public GameObject batteryPrefab;
 
+    public Light damageIndicatorLight;
+
     private float healthIncreaseMultiplyer = 1.5f;
+
+    private Vector3 enemyReducedScale;
 
     private void Start()
     {
         newWaveEventSubscription = EventBus.Subscribe<NewWaveEvent>(_OnNewWave);
+        restartGameEventSubscription = EventBus.Subscribe<RestartGameEvent>(_OnRestart);
 
         health = (int)(health * Mathf.Pow(healthIncreaseMultiplyer, currentWave));
+        if(tag == "Enemy")
+        {
+            enemyReducedScale = new Vector3(transform.parent.localScale.x, transform.parent.localScale.y / 2, transform.parent.localScale.z);
+        }
         
+
         if (playerHealthText != null)
         {
             playerHealthText.text = "Health: " + health.ToString();
@@ -43,8 +55,8 @@ public class HasHealth : MonoBehaviour
                 {
                     if(batteryPrefab != null)
                     {
-                        float rand = Random.Range(0, 10);
-                        if(rand <= 1)
+                        float rand = Random.Range(0, 100);
+                        if(rand <= 10)
                         {
                             Debug.Log("battery dropped");
                             Instantiate(batteryPrefab, transform.position, batteryPrefab.transform.rotation);
@@ -63,7 +75,22 @@ public class HasHealth : MonoBehaviour
         if (playerHealthText != null)
         {
             playerHealthText.text = "Health: " + health.ToString();
+            Debug.Log("Player damaged");
+            StartCoroutine(DamageLightFlash());
         }
+        if(transform.gameObject.tag == "Enemy")
+        {
+            transform.parent.localScale = enemyReducedScale;
+        }
+    }
+
+    IEnumerator DamageLightFlash()
+    {
+        Debug.Log("FLASH OUT");
+        damageIndicatorLight.transform.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1);
+        damageIndicatorLight.transform.gameObject.SetActive(false);
+        
     }
 
     public void resetHealth()
@@ -75,6 +102,11 @@ public class HasHealth : MonoBehaviour
     void _OnNewWave(NewWaveEvent e)
     {
         currentWave++;
+    }
+
+    void _OnRestart(RestartGameEvent e)
+    {
+        currentWave = 0;
     }
 }
 
