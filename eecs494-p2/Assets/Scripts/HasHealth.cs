@@ -22,6 +22,8 @@ public class HasHealth : MonoBehaviour
 
     private Vector3 enemyReducedScale;
 
+    private bool gameOver = false;
+
     private void Start()
     {
         newWaveEventSubscription = EventBus.Subscribe<NewWaveEvent>(_OnNewWave);
@@ -47,6 +49,7 @@ public class HasHealth : MonoBehaviour
             if(transform.tag == "Player")
             {
                 //gameOver
+                gameOver = true;
                 EventBus.Publish<GameOverEvent>(new GameOverEvent());
             }
             else
@@ -71,6 +74,8 @@ public class HasHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (gameOver) return;
+
         health -= damage;
         if (playerHealthText != null)
         {

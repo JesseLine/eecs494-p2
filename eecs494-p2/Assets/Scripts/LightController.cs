@@ -22,7 +22,7 @@ public class LightController : MonoBehaviour
         timer += Time.deltaTime;
         if(timer >= 0.5)
         {
-            light.color = enemyEyeColor;
+            //light.color = enemyEyeColor;
         }
     }
 
@@ -47,7 +47,7 @@ public class LightController : MonoBehaviour
         if(e.go == transform.parent.gameObject)
         {
 
-            light.color = Color.red;
+            //light.color = Color.red;
             timer = 0;
         }
         

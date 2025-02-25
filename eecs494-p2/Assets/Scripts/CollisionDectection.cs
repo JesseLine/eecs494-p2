@@ -1,11 +1,20 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class CollisionDectection : MonoBehaviour
 {
+    Subscription<GameOverEvent> gameOverEventSubscription;
+
     public float invincibilityTime = 3f;
 
     private float time = 3f;
+    private bool gameOver = false;
 
+    private void Start()
+    {
+        gameOverEventSubscription = EventBus.Subscribe<GameOverEvent>(_OnGameOver);
+    }
     private void Update()
     {
         time += Time.deltaTime;
@@ -27,14 +36,18 @@ public class CollisionDectection : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (gameOver) return;
+
         if(other.gameObject.tag == "Enemy")
         {
             if(time >= invincibilityTime)
             {
                 GetComponent<HasHealth>().TakeDamage(1);
+                //Debug.Log("Knockback!");
                 time = 0;
             }
-            
+            StartCoroutine(Knockback(other.gameObject));
+
         }
 
         if(other.tag == "Battery")
@@ -43,6 +56,20 @@ public class CollisionDectection : MonoBehaviour
             EventBus.Publish<BatteryPickUpEvent>(new BatteryPickUpEvent());
             Destroy(other.gameObject);
         }
+    }
+
+    IEnumerator Knockback(GameObject enemy)
+    {
+        Vector3 knockbackDirection = (enemy.gameObject.transform.position - transform.position).normalized;
+        float knockbackForce = 5f;
+        enemy.transform.parent.transform.gameObject.GetComponentInChildren<Rigidbody>().AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+        yield return new WaitForSeconds(1);
+        enemy.transform.parent.transform.gameObject.GetComponentInChildren<Rigidbody>().AddForce(-knockbackDirection * knockbackForce, ForceMode.Impulse);
+    }
+
+    void _OnGameOver(GameOverEvent e)
+    {
+        gameOver = true;
     }
 
 }

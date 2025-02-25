@@ -41,7 +41,8 @@ public class FlashlightEnemyDetection : MonoBehaviour
             if(enemyInRange(enemy) && enemyNotHidden(enemy) && enemyInLightAngle(enemy) && GetComponent<Flashlight>().isOn())
             {
                 enemy.GetComponentInParent<GhostMovement>().ReduceSpeed();
-                enemy.transform.parent.localScale = new Vector3(enemy.transform.parent.localScale.x, enemy.transform.parent.localScale.y /2, enemy.transform.parent.localScale.z);
+                enemy.transform.parent.localScale = enemy.transform.parent.GetComponent<GhostMovement>().reducedScale;
+                //new Vector3(enemy.transform.parent.localScale.x, enemy.transform.parent.localScale.y /2, enemy.transform.parent.localScale.z);
                 if ((time >= damageRate))
                 {
                     //deal damage

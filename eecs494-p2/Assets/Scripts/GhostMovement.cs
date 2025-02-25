@@ -24,6 +24,8 @@ public class GhostMovement : MonoBehaviour
 
     private Vector3 originalScale;
 
+    public Vector3 reducedScale;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,6 +39,7 @@ public class GhostMovement : MonoBehaviour
         reducedSpeed = speed / 2;
 
         originalScale = transform.localScale;
+        reducedScale = new Vector3(originalScale.x, originalScale.y / 2, originalScale.z);
 
         currentSpeed = speed;
         navMeshAgent = GetComponent<NavMeshAgent>();
