@@ -11,7 +11,7 @@ public class GhostMovement : MonoBehaviour
 
     public GameObject waveController;
 
-    public float speed = 2.5f;
+    public float speed = 4f;
     public float reducedSpeed = 1f;
 
     //public static int currentWave = 0;
@@ -21,6 +21,8 @@ public class GhostMovement : MonoBehaviour
     private float enemySpeedIncreaseMultiplyer = 1.15f;
 
     private bool gamePause = false;
+
+    private Vector3 originalScale;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,6 +35,8 @@ public class GhostMovement : MonoBehaviour
         //Debug.Log(currentWave);
         speed = (speed * Mathf.Pow(enemySpeedIncreaseMultiplyer, waveController.GetComponent<WaveController>().GetCurrentWave()-1));
         reducedSpeed = speed / 2;
+
+        originalScale = transform.localScale;
 
         currentSpeed = speed;
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -49,6 +53,9 @@ public class GhostMovement : MonoBehaviour
         {
             navMeshAgent.SetDestination(player.transform.position);
         }
+
+        //lerp size to original
+        transform.localScale = Vector3.Lerp(transform.localScale, originalScale, Time.deltaTime * 15);
     }
 
     private void LateUpdate()

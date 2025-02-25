@@ -5,6 +5,7 @@ public class GameOverMenu : MonoBehaviour
 {
     public void RestartGame()
     {
+        EventBus.Publish<RestartGameEvent>(new RestartGameEvent());
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     public void QuitGame()
@@ -12,4 +13,9 @@ public class GameOverMenu : MonoBehaviour
         Debug.Log("Quit");
         Application.Quit();
     }
+}
+
+public class RestartGameEvent
+{
+
 }

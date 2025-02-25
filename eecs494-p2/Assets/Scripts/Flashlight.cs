@@ -12,7 +12,8 @@ public class Flashlight : MonoBehaviour
 
     public GameObject ON;
     public GameObject OFF;
-    public float battery = 100f;
+    public float battery = 50f;
+    public float maxBattery = 50f;
     public TextMeshProUGUI batteryPercentageText;
 
     private bool isON;
@@ -49,7 +50,7 @@ public class Flashlight : MonoBehaviour
                 battery -= Time.deltaTime;
                 if (batteryPercentageText != null)
                 {
-                    batteryPercentageText.text = "Battery: " + ((int)battery).ToString() + "%";
+                    batteryPercentageText.text = "Battery: " + ((int)(battery / maxBattery * 100)).ToString() + "%";
                 }
             }
             
@@ -57,13 +58,13 @@ public class Flashlight : MonoBehaviour
         }
         if (!isON)
         {
-            if (battery > 100)
+            if (battery > maxBattery)
             {
-                battery = 100;
+                battery = maxBattery;
             }
             if (batteryPercentageText != null)
             {
-                batteryPercentageText.text = "Battery: " + ((int)battery).ToString() + "%";
+                batteryPercentageText.text = "Battery: " + ((int)(battery/maxBattery * 100)).ToString() + "%";
             }
             
         }
@@ -120,6 +121,6 @@ public class Flashlight : MonoBehaviour
 
     void _OnBatteryPickUp(BatteryPickUpEvent e)
     {
-        battery = 100;
+        battery = maxBattery;
     }
 }
