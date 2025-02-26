@@ -36,7 +36,7 @@ public class GhostMovement : MonoBehaviour
         waveController = GameObject.FindGameObjectWithTag("WaveController");
         //Debug.Log(currentWave);
         speed = (speed * Mathf.Pow(enemySpeedIncreaseMultiplyer, waveController.GetComponent<WaveController>().GetCurrentWave()-1));
-        reducedSpeed = speed / 2;
+        reducedSpeed = speed / 4;
 
         originalScale = transform.localScale;
         reducedScale = new Vector3(originalScale.x, originalScale.y / 2, originalScale.z);

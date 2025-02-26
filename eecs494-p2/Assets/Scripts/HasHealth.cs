@@ -29,7 +29,11 @@ public class HasHealth : MonoBehaviour
         newWaveEventSubscription = EventBus.Subscribe<NewWaveEvent>(_OnNewWave);
         restartGameEventSubscription = EventBus.Subscribe<RestartGameEvent>(_OnRestart);
 
-        health = (int)(health * Mathf.Pow(healthIncreaseMultiplyer, currentWave));
+        health = ((int)(health * Mathf.Pow(healthIncreaseMultiplyer, currentWave)));
+        if(health > 5)
+        {
+            health = 5;
+        }
         if(tag == "Enemy")
         {
             enemyReducedScale = new Vector3(transform.parent.localScale.x, transform.parent.localScale.y / 2, transform.parent.localScale.z);
@@ -59,7 +63,7 @@ public class HasHealth : MonoBehaviour
                     if(batteryPrefab != null)
                     {
                         float rand = Random.Range(0, 100);
-                        if(rand <= 10)
+                        if(rand <= 15)
                         {
                             Debug.Log("battery dropped");
                             Instantiate(batteryPrefab, transform.position, batteryPrefab.transform.rotation);
