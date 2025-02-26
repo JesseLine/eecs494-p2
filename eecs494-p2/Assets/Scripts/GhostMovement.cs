@@ -59,6 +59,7 @@ public class GhostMovement : MonoBehaviour
 
         //lerp size to original
         transform.localScale = Vector3.Lerp(transform.localScale, originalScale, Time.deltaTime * 15);
+        navMeshAgent.speed = currentSpeed;
     }
 
     private void LateUpdate()

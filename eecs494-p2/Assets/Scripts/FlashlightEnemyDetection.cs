@@ -40,9 +40,9 @@ public class FlashlightEnemyDetection : MonoBehaviour
             //Debug.Log(enemy.name + " " + enemyInLightAngle(enemy) + " " + enemyNotHidden(enemy) + " " + enemyInRange(enemy));
             if(enemyInRange(enemy) && enemyNotHidden(enemy) && enemyInLightAngle(enemy) && GetComponent<Flashlight>().isOn())
             {
-                enemy.GetComponentInParent<GhostMovement>().ReduceSpeed();
+                //enemy reduce speed
+                enemy.transform.parent.GetComponent<GhostMovement>().ReduceSpeed();
                 enemy.transform.parent.localScale = enemy.transform.parent.GetComponent<GhostMovement>().reducedScale;
-                //new Vector3(enemy.transform.parent.localScale.x, enemy.transform.parent.localScale.y /2, enemy.transform.parent.localScale.z);
                 if ((time >= damageRate))
                 {
                     //deal damage
@@ -51,9 +51,7 @@ public class FlashlightEnemyDetection : MonoBehaviour
                     Debug.Log(enemy.GetComponent<HasHealth>().health);
 
                     //change enemy eyes color
-                    //Debug.Log("EYE CHANGE COLOR");
                     EventBus.Publish<DamageDealtEvent>(new DamageDealtEvent(enemy));
-                    //enemy.GetComponentInChildren<Light>().color = Color.red;
 
                 }
                 
@@ -61,9 +59,8 @@ public class FlashlightEnemyDetection : MonoBehaviour
             else
             {
                 //Debug.Log("Enemy NOT in light");
-                enemy.GetComponentInParent<GhostMovement>().NormalSpeed();
-                //go back to normal eye color
-                //enemy.GetComponentInChildren<Light>().color = Color.green;
+                //enemy return to normal speed
+                enemy.transform.parent.GetComponent<GhostMovement>().NormalSpeed();
             }
         }
         if(time >= damageRate)

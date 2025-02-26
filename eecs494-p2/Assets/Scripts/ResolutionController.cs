@@ -6,6 +6,6 @@ public class ResolutionController : MonoBehaviour
     void Start()
     {
         QualitySettings.vSyncCount = 1;
-        Screen.SetResolution(1920, 1080, false);
+        //Screen.SetResolution(1920, 1080, false);
     }
 }

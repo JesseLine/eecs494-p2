@@ -319,7 +319,7 @@ GameObject:
   - component: {fileID: 3161024327302749274}
   m_Layer: 7
   m_Name: Ghost
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
